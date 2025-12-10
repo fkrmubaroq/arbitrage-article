@@ -7,14 +7,36 @@ USE arbitrage_ads;
 -- Articles table
 CREATE TABLE IF NOT EXISTS articles (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  slug VARCHAR(255) UNIQUE NOT NULL,
   title VARCHAR(255) NOT NULL,
-  thumbnail TEXT,
+  slug VARCHAR(255) UNIQUE NOT NULL,
+  excerpt TEXT,
   category VARCHAR(255),
-  content_html LONGTEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  tags JSON,
+  status ENUM('draft', 'published') DEFAULT 'draft',
+  cover_image_url VARCHAR(255),
+  is_multi_page BOOLEAN DEFAULT FALSE,
+  meta_title VARCHAR(255),
+  meta_description VARCHAR(255),
+  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_slug (slug),
-  INDEX idx_created_at (created_at)
+  INDEX idx_status (status),
+  INDEX idx_createdAt (createdAt)
+);
+
+-- Article pages table
+CREATE TABLE IF NOT EXISTS article_pages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  article_id INT NOT NULL,
+  page_index INT NOT NULL,
+  title VARCHAR(255),
+  contents JSON,
+  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_article_id (article_id),
+  INDEX idx_page_index (page_index),
+  FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
+  UNIQUE KEY unique_article_page (article_id, page_index)
 );
 
 -- Pageviews table

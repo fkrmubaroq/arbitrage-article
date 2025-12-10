@@ -1,9 +1,9 @@
 "use client"
 import {
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-    useSidebar,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import Link from 'next/link'
 
@@ -14,17 +14,19 @@ export function AppTitle() {
       <SidebarMenuItem>
         <SidebarMenuButton
           size='lg'
-            className='group-data-[state=collapsed]:bg-red-500'
+          className='group-data-[state=collapsed]:bg-red-500'
           asChild
         >
-          <div className='group-data-[state=collapsed]:hidden'>
+          <div>
+            <div className="text-2xl font-bold group-data-[state=expanded]:hidden">B</div>
+
             <Link
               href='/'
               onClick={() => setOpenMobile(false)}
-              className='grid flex-1 text-start text-sm leading-tight'
+              className='grid flex-1 text-start text-sm leading-tight group-data-[state=collapsed]:hidden border'
             >
-              <span className='truncate font-bold'>Shadcn-Admin</span>
-              <span className='truncate text-xs'>Vite + ShadcnUI</span>
+              <span className='truncate font-bold'>Blogify</span>
+              <span className='truncate text-xs'>Admin Panel</span>
             </Link>
           </div>
         </SidebarMenuButton>

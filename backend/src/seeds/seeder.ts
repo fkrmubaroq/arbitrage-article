@@ -1,4 +1,5 @@
 import { getDb } from "../lib/db.js";
+import { seedArticlePages } from "./seeds/article-pages-seed.js";
 import { seedArticles } from "./seeds/articles-seed.js";
 import { seedEvents } from "./seeds/events-seed.js";
 import { seedPageviews } from "./seeds/pageviews-seed.js";
@@ -13,6 +14,7 @@ export async function clearTables() {
     
     await db.query("TRUNCATE TABLE events");
     await db.query("TRUNCATE TABLE pageviews");
+    await db.query("TRUNCATE TABLE article_pages");
     await db.query("TRUNCATE TABLE articles");
     
     // Re-enable foreign key checks
@@ -32,10 +34,15 @@ export async function runSeeds() {
     // Clear existing data
     await clearTables();
     
-    // Seed articles first (pageviews depends on articles)
+    // Seed articles first (pageviews and article_pages depend on articles)
     console.log("\n📝 Seeding articles...");
     const articles = await seedArticles();
     console.log(`✅ Seeded ${articles.length} articles`);
+    
+    // Seed article pages
+    console.log("\n📄 Seeding article pages...");
+    await seedArticlePages(articles);
+    console.log("✅ Seeded article pages");
     
     // Seed pageviews
     console.log("\n👁️  Seeding pageviews...");
