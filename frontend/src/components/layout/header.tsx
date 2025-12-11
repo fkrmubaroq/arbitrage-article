@@ -21,7 +21,7 @@ export default function Header({ fixed = true, className }: { fixed?: boolean, c
     }, [])
     return <header
         className={cn(
-            'z-50 h-16 border-b dark:bg-background bg-white shadow-md',
+            'z-50 h-16 dark:border-b-none  dark:bg-background  bg-white shadow-lg',
             fixed && 'header-fixed peer/header sticky top-0 w-[inherit]',
             offset > 10 && fixed ? 'shadow' : 'shadow-none',
             className

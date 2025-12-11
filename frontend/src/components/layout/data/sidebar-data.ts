@@ -17,7 +17,7 @@ export const sidebarData = {
         },
         {
           title: "Article",
-          url: "/admin/article",
+          url: "/admin/articles",
           icon: NewspaperIcon,
         },
       ],
