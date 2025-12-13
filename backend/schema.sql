@@ -4,13 +4,25 @@
 CREATE DATABASE IF NOT EXISTS arbitrage_ads;
 USE arbitrage_ads;
 
+-- Categories table
+CREATE TABLE IF NOT EXISTS categories (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  slug VARCHAR(255) UNIQUE NOT NULL,
+  description TEXT,
+  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_slug (slug),
+  INDEX idx_name (name)
+);
+
 -- Articles table
 CREATE TABLE IF NOT EXISTS articles (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   slug VARCHAR(255) UNIQUE NOT NULL,
   excerpt TEXT,
-  category VARCHAR(255),
+  category_id INT NULL,
   tags JSON,
   status ENUM('draft', 'published') DEFAULT 'draft',
   cover_image_url VARCHAR(255),
@@ -21,7 +33,9 @@ CREATE TABLE IF NOT EXISTS articles (
   updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_slug (slug),
   INDEX idx_status (status),
-  INDEX idx_createdAt (createdAt)
+  INDEX idx_createdAt (createdAt),
+  INDEX idx_category_id (category_id),
+  FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
 );
 
 -- Article pages table

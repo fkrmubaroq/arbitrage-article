@@ -123,19 +123,21 @@ const articles = [
   }
 ];
 
-export async function seedArticles(): Promise<Array<{ id: number; slug: string }>> {
+export async function seedArticles(categoryMap: Map<string, number>): Promise<Array<{ id: number; slug: string }>> {
   const db = await getDb();
   const articleData: Array<{ id: number; slug: string }> = [];
 
   for (const article of articles) {
+    const categoryId = categoryMap.get(article.category) || null;
+    
     const [result] = await db.query(
-      `INSERT INTO articles (title, slug, excerpt, category, tags, status, cover_image_url, is_multi_page, meta_title, meta_description) 
+      `INSERT INTO articles (title, slug, excerpt, category_id, tags, status, cover_image_url, is_multi_page, meta_title, meta_description) 
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         article.title,
         article.slug,
         article.excerpt,
-        article.category,
+        categoryId,
         JSON.stringify(article.tags),
         article.status,
         article.cover_image_url,

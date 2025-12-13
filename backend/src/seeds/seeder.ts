@@ -1,6 +1,7 @@
 import { getDb } from "../lib/db.js";
 import { seedArticlePages } from "./seeds/article-pages-seed.js";
 import { seedArticles } from "./seeds/articles-seed.js";
+import { seedCategories } from "./seeds/categories-seed.js";
 import { seedEvents } from "./seeds/events-seed.js";
 import { seedPageviews } from "./seeds/pageviews-seed.js";
 
@@ -16,6 +17,7 @@ export async function clearTables() {
     await db.query("TRUNCATE TABLE pageviews");
     await db.query("TRUNCATE TABLE article_pages");
     await db.query("TRUNCATE TABLE articles");
+    await db.query("TRUNCATE TABLE categories");
     
     // Re-enable foreign key checks
     await db.query("SET FOREIGN_KEY_CHECKS = 1");
@@ -34,9 +36,14 @@ export async function runSeeds() {
     // Clear existing data
     await clearTables();
     
-    // Seed articles first (pageviews and article_pages depend on articles)
+    // Seed categories first (articles depend on categories)
+    console.log("\n📂 Seeding categories...");
+    const categoryMap = await seedCategories();
+    console.log(`✅ Seeded ${categoryMap.size} categories`);
+    
+    // Seed articles (pageviews and article_pages depend on articles)
     console.log("\n📝 Seeding articles...");
-    const articles = await seedArticles();
+    const articles = await seedArticles(categoryMap);
     console.log(`✅ Seeded ${articles.length} articles`);
     
     // Seed article pages

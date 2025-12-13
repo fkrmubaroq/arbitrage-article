@@ -1,0 +1,62 @@
+.blocknote-editor {
+    &.blocknote-content-empty [contenteditable] {
+        background-color: var(--muted);
+    }
+
+    .blocknote-editor-container {
+        display: flex;
+        flex-direction: column-reverse;
+
+        &[data-color-scheme="light"] {
+            [contenteditable] {
+                border: 1px solid var(--border);
+            }
+        }
+
+        [contenteditable] {
+            min-height: 300px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            border-radius: 0 0 var(--radius) var(--radius);
+        }
+
+        border-radius: 4px;
+
+        h1.bn-inline-content {
+            font-size: 24px;
+            line-height: 1.2;
+        }
+
+        h2.bn-inline-content {
+            font-size: 20px;
+            line-height: 1.2;
+        }
+
+        h3.bn-inline-content {
+            font-size: 18px;
+            line-height: 1.2;
+        }
+
+        .bn-side-menu[data-block-type="heading"] {
+            display: flex;
+            align-items: start !important;
+            padding-top: 7px;
+        }
+
+        .bn-formatting-toolbar {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+
+            button[role="combobox"] {
+                width: 200px;
+                box-shadow: none;
+
+                &:hover {
+                    background-color: var(--muted);
+                }
+            }
+        }
+
+    }
+
+}
