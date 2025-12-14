@@ -17,13 +17,23 @@ import * as Popover from "@/components/ui/popover";
 import * as Select from "@/components/ui/select";
 import * as Tabs from "@/components/ui/tabs";
 import * as Tooltip from "@/components/ui/tooltip";
+import { Block } from "@blocknote/core";
 
-export default function EditorContent() {
+export default function EditorContent({ onChangeContent, defaultValue }: { onChangeContent: (content: Block[]) => void, defaultValue?: string }) {
     const { theme } = useTheme();
-    const editor = useCreateBlockNote();
+
+    const editor = useCreateBlockNote({
+        initialContent: defaultValue ? JSON.parse(defaultValue) : [
+            {
+                type: "paragraph",
+                content: []
+            }
+        ],
+    });
     const editorRef = useRef<HTMLDivElement>(null);
 
     const onChangeEditorContent = () => {
+        onChangeContent(editor.document);
         const isEmpty = editor.document.every(block => (block.content as any[])?.length === 0);
         const parentEl = editorRef.current?.querySelector(".blocknote-editor-container")?.parentElement;
         if (!isEmpty) {
@@ -38,6 +48,7 @@ export default function EditorContent() {
     useEffect(() => {
         onChangeEditorContent();
     }, [])
+
 
     return (
         <div ref={editorRef} className="blocknote-editor">

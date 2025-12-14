@@ -50,8 +50,8 @@ export default function FormArticleMetadata({ form }: { form: UseFormReturn<Arti
             name="cover_image_url"
             render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel>Slug</FieldLabel>
-                    <DropzoneFile invalid={fieldState.invalid} />
+                    <FieldLabel>Cover Image</FieldLabel>
+                    <DropzoneFile invalid={fieldState.invalid} onChange={(files) => field.onChange(files[0])} />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </Field>
             )}

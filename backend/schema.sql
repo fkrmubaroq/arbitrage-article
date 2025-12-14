@@ -26,7 +26,6 @@ CREATE TABLE IF NOT EXISTS articles (
   tags JSON,
   status ENUM('draft', 'published') DEFAULT 'draft',
   cover_image_url VARCHAR(255),
-  is_multi_page BOOLEAN DEFAULT FALSE,
   meta_title VARCHAR(255),
   meta_description VARCHAR(255),
   createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,

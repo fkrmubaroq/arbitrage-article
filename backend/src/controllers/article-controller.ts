@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import articleModel, { findAllArticles } from "../models/article-model.js";
-import type { CreateArticleDto } from "../types/article.js";
+import * as v from "valibot";
+import articleSchema from "@/validation/article-schema.js";
+import contentService from "@/services/content-service.js";
 
 async function getArticles(req: Request, res: Response) {
   try {
@@ -15,24 +17,38 @@ async function getArticles(req: Request, res: Response) {
 
 async function createArticle(req: Request, res: Response) {
   try {
-    const { title, slug, thumbnail, category, content_html } = req.body;
+    const result = v.safeParse(articleSchema.createArticleSchema, req.body);
 
-    if (!title || !slug || !content_html) {
+    if (!result.success) {
+      const errors = result.issues.map((issue) => ({
+        path: issue.path?.map((p) => p.key).join(".") || "root",
+        message: issue.message,
+      }));
+
       return res.status(400).json({
-        error: "Title, slug, and content are required",
+        error: "Validation failed",
+        details: errors,
       });
     }
 
+    const validatedData = result.output;
+
     const articleData: CreateArticleDto = {
-      title,
-      slug,
-      thumbnail,
-      category,
-      content_html,
+      title: validatedData.title,
+      slug: validatedData.slug,
+      excerpt: validatedData.excerpt,
+      category_id: validatedData.category_id,
+      tags: validatedData.tags,
+      status: validatedData.status || "draft",
+      cover_image_url: validatedData.cover_image_url,
+      meta_title: validatedData.meta_title,
+      meta_description: validatedData.meta_description,
+      contents: validatedData.contents,
     };
 
-    const article = await articleModel.createArticle(articleData);
-    res.status(201).json({ success: true, article });
+    await articleModel.createArticle(articleData);
+
+    res.status(201).json({ message: "Article created successfully" });
   } catch (error: unknown) {
     console.error("Error creating article:", error);
     if (error instanceof Error && error.message.includes("Duplicate entry")) {
@@ -41,6 +57,9 @@ async function createArticle(req: Request, res: Response) {
       });
     }
     res.status(500).json({ error: "Failed to create article" });
+  }
+  finally {
+    res.end();
   }
 }
 

@@ -25,7 +25,9 @@ const articleFormSchema = z.object({
     excerpt: z.string().min(1, "Excerpt is required"),
     category_id: z.string().min(1, "Category is required"),
     tags: z.array(z.string()).min(1, "Tags are required"),
-    cover_image_url: z.string().min(1, "Cover image is required"),
+    cover_image_url: z.any().optional().refine((file) => file ? file instanceof File : false, {
+        message: "Cover image is required",
+    }),
     meta_title: z.string().min(1, "Meta title is required"),
     meta_description: z.string().min(1, "Meta description is required"),
     contents: z.string().min(1, "Contents are required"),
@@ -40,7 +42,7 @@ export default function FormArticle() {
             excerpt: "",
             category_id: "",
             tags: [],
-            cover_image_url: "",
+            cover_image_url: undefined,
             meta_title: "",
             meta_description: "",
             contents: "",
@@ -50,13 +52,15 @@ export default function FormArticle() {
     const onSubmit = (values: ArticleFormValues) => {
         console.log(values);
     };
+
+    console.log(form.formState.errors);
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-x-4">
                 <div className="flex flex-col space-y-3 w-[70%]">
-                    <Accordion type="single" collapsible defaultValue="item-1">
-                        <AccordionItem value="item-1">
-                            <AccordionTrigger className="bg-gray-100 px-2 rounded-b-none border-l border-r border-t font-bold hover:bg-gray-200">
+                    <Accordion type="single" collapsible defaultValue="content">
+                        <AccordionItem value="content">
+                            <AccordionTrigger className="dark:bg-background px-2 rounded-b-none border-l border-r border-t font-bold">
                                 <div className="flex items-center gap-x-2 px-2">
                                     <NewspaperIcon
                                         className="size-3.5" />
@@ -84,7 +88,7 @@ export default function FormArticle() {
                                         <FormItem>
                                             <FormLabel>Contents</FormLabel>
                                             <FormControl>
-                                                <BlocknoteEditor />
+                                                <BlocknoteEditor onChangeContent={(value) => field.onChange(JSON.stringify(value))} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -97,7 +101,7 @@ export default function FormArticle() {
                 <div className="w-[30%] flex flex-col space-y-3 sticky top-0">
                     <Accordion type="multiple" defaultValue={["metadata", "seo"]}>
                         <AccordionItem value="metadata">
-                            <AccordionTrigger className="bg-gray-100 px-2 rounded-b-none border-l border-r border-t font-semibold  hover:bg-gray-200">
+                            <AccordionTrigger className="bg-background px-2 rounded-b-none border-l border-r border-t font-semibold">
                                 <div className="flex items-center gap-x-2 px-2">
                                     <SquarePenIcon
                                         className="size-3.5" />
@@ -109,7 +113,7 @@ export default function FormArticle() {
                             </AccordionContent>
                         </AccordionItem>
                         <AccordionItem value="seo" className="mt-2">
-                            <AccordionTrigger className="bg-gray-100 px-2 rounded-b-none border-l border-r border-t font-semibold  hover:bg-gray-200">
+                            <AccordionTrigger className="bg-background px-2 rounded-b-none border-l border-r border-t font-semibold  hover:bg-gray-200">
                                 <div className="flex items-center gap-x-2 px-2">
                                     <GlobeIcon
                                         className="size-3.5" />

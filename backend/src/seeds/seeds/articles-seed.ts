@@ -9,7 +9,6 @@ const articles = [
     tags: ["passive income", "online business", "financial freedom"],
     status: "published",
     cover_image_url: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
-    is_multi_page: false,
     meta_title: "10 Cara Mendapatkan Passive Income Online yang Terbukti 2024",
     meta_description: "Temukan 10 cara terbaik untuk menghasilkan passive income online. Panduan lengkap untuk pemula yang ingin mencapai financial freedom."
   },
@@ -21,7 +20,6 @@ const articles = [
     tags: ["investasi", "saham", "pemula", "trading"],
     status: "published",
     cover_image_url: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800",
-    is_multi_page: true,
     meta_title: "Panduan Investasi Saham untuk Pemula 2024 - Tips & Strategi",
     meta_description: "Pelajari cara investasi saham untuk pemula. Panduan lengkap dengan tips, strategi, dan langkah-langkah praktis memulai investasi saham."
   },
@@ -33,7 +31,6 @@ const articles = [
     tags: ["crypto", "arbitrage", "trading", "bitcoin"],
     status: "published",
     cover_image_url: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800",
-    is_multi_page: false,
     meta_title: "Strategi Crypto Arbitrage yang Menguntungkan - Panduan Lengkap",
     meta_description: "Temukan strategi crypto arbitrage terbaik untuk mendapatkan profit. Panduan lengkap trading cryptocurrency dengan teknik arbitrage."
   },
@@ -45,7 +42,6 @@ const articles = [
     tags: ["affiliate marketing", "online business", "marketing", "pemula"],
     status: "published",
     cover_image_url: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800",
-    is_multi_page: false,
     meta_title: "Panduan Affiliate Marketing untuk Pemula - Tips Sukses",
     meta_description: "Pelajari affiliate marketing dari dasar hingga advanced. Panduan lengkap untuk pemula yang ingin sukses di dunia affiliate marketing."
   },
@@ -57,7 +53,6 @@ const articles = [
     tags: ["dropshipping", "e-commerce", "online business", "tips"],
     status: "published",
     cover_image_url: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800",
-    is_multi_page: false,
     meta_title: "7 Tips Sukses Dropshipping untuk Pemula - Panduan Praktis",
     meta_description: "Pelajari 7 tips sukses dropshipping yang wajib diketahui pemula. Strategi praktis untuk membangun bisnis dropshipping yang profitable."
   },
@@ -69,7 +64,6 @@ const articles = [
     tags: ["forex", "trading", "pemula", "investasi"],
     status: "published",
     cover_image_url: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800",
-    is_multi_page: false,
     meta_title: "Dasar-dasar Forex Trading untuk Pemula - Panduan Lengkap",
     meta_description: "Pelajari dasar-dasar forex trading dari nol. Panduan lengkap untuk pemula yang ingin memahami dunia trading forex."
   },
@@ -81,7 +75,6 @@ const articles = [
     tags: ["e-commerce", "website", "online business", "web development"],
     status: "published",
     cover_image_url: "https://images.unsplash.com/photo-1556740758-90de374c12ad?w=800",
-    is_multi_page: false,
     meta_title: "Cara Membangun Website E-commerce Profesional - Tutorial",
     meta_description: "Panduan lengkap membangun website e-commerce profesional. Tips memilih platform, desain, dan optimasi untuk meningkatkan penjualan."
   },
@@ -93,7 +86,6 @@ const articles = [
     tags: ["social media", "marketing", "digital marketing", "2024"],
     status: "published",
     cover_image_url: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800",
-    is_multi_page: false,
     meta_title: "Strategi Social Media Marketing 2024 - Tips Terbaru",
     meta_description: "Pelajari strategi social media marketing terbaru 2024. Tips dan trik untuk meningkatkan engagement dan ROI di platform media sosial."
   },
@@ -105,7 +97,6 @@ const articles = [
     tags: ["real estate", "investasi", "properti", "pemula"],
     status: "published",
     cover_image_url: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800",
-    is_multi_page: false,
     meta_title: "Panduan Investasi Real Estate untuk Pemula - Tips & Strategi",
     meta_description: "Pelajari cara investasi real estate untuk pemula. Panduan lengkap dengan strategi, tips, dan cara memulai investasi properti dengan modal terbatas."
   },
@@ -117,7 +108,6 @@ const articles = [
     tags: ["content creation", "monetization", "digital business", "creative"],
     status: "draft",
     cover_image_url: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800",
-    is_multi_page: false,
     meta_title: "Cara Monetisasi Konten Kreatif - Panduan Lengkap",
     meta_description: "Pelajari berbagai cara monetisasi konten kreatif di era digital. Tips dan strategi untuk mengubah konten menjadi sumber pendapatan."
   }
@@ -131,8 +121,8 @@ export async function seedArticles(categoryMap: Map<string, number>): Promise<Ar
     const categoryId = categoryMap.get(article.category) || null;
     
     const [result] = await db.query(
-      `INSERT INTO articles (title, slug, excerpt, category_id, tags, status, cover_image_url, is_multi_page, meta_title, meta_description) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO articles (title, slug, excerpt, category_id, tags, status, cover_image_url, meta_title, meta_description) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         article.title,
         article.slug,
@@ -141,7 +131,6 @@ export async function seedArticles(categoryMap: Map<string, number>): Promise<Ar
         JSON.stringify(article.tags),
         article.status,
         article.cover_image_url,
-        article.is_multi_page,
         article.meta_title,
         article.meta_description,
       ],
