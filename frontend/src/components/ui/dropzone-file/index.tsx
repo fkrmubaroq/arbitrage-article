@@ -1,8 +1,8 @@
-import { ImageIcon } from "lucide-react"
-import { Button } from "../button"
-import { useRef, useState } from "react";
 import { cn, formatFileSize } from "@/lib/utils";
+import { ImageIcon } from "lucide-react";
 import Image from "next/image";
+import { useRef, useState } from "react";
+import { Button } from "../button";
 
 const ACCEPTED_FILE_TYPES = {
     image: "image/*",
@@ -67,7 +67,7 @@ function EmptyState({ type = "image" }: { type?: "image" | "document" }) {
         {type === "image" &&
             <>
                 <ImageIcon className="w-10 h-10 text-gray-500" />
-                <p className="text-sm text-gray-500">Drag and drop your file here or click to upload</p>
+                <p className="text-sm text-gray-500 text-center">Drag and drop your file here or click to upload</p>
                 <Button type="button" variant="ghost" className="text-blue-500">Upload Image</Button>
             </>
         }

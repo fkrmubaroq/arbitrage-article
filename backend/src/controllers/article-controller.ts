@@ -1,8 +1,7 @@
-import { Request, Response } from "express";
-import articleModel, { findAllArticles } from "../models/article-model.js";
-import * as v from "valibot";
 import articleSchema from "@/validation/article-schema.js";
-import contentService from "@/services/content-service.js";
+import { Request, Response } from "express";
+import * as v from "valibot";
+import articleModel, { findAllArticles } from "../models/article-model.js";
 
 async function getArticles(req: Request, res: Response) {
   try {
