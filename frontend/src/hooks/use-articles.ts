@@ -1,7 +1,4 @@
-"use client";
-
 import { ENV } from "@/lib/env";
-import type { Article } from "@/types/article";
 import { useQuery } from "@tanstack/react-query";
 
 async function fetchArticles(limit = 6): Promise<Article[]> {

@@ -36,7 +36,7 @@ async function createArticle(req: Request, res: Response) {
       title: validatedData.title,
       slug: validatedData.slug,
       excerpt: validatedData.excerpt,
-      category_id: validatedData.category_id,
+      category_id: validatedData.category_id ? Number(validatedData.category_id) : null,
       tags: validatedData.tags,
       status: validatedData.status || "draft",
       cover_image_url: validatedData.cover_image_url,

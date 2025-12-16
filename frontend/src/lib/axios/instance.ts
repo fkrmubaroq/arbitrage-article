@@ -2,13 +2,10 @@
 import axios from "axios"
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/api",
+  baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api` || "http://localhost:3000/api",
   withCredentials: true, // opsional, jika butuh kirim cookie/session
-  headers: {
-    "Content-Type": "application/json",
-  },
 })
-  
+
 // Optional: Interceptor for request (e.g., inject token)
 axiosInstance.interceptors.request.use(
   (config) => {

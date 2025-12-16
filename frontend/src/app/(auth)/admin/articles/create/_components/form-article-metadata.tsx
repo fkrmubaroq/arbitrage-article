@@ -32,6 +32,7 @@ const optionsCategory = [
     { value: "other", label: "Other", },
 ];
 export default function FormArticleMetadata({ form }: { form: UseFormReturn<ArticleFormValues> }) {
+    console.log(form.watch())
     return <>
         <FormField
             control={form.control}
@@ -51,7 +52,10 @@ export default function FormArticleMetadata({ form }: { form: UseFormReturn<Arti
             render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                     <FieldLabel>Cover Image</FieldLabel>
-                    <DropzoneFile invalid={fieldState.invalid} onChange={(files) => field.onChange(files[0])} />
+                    <DropzoneFile invalid={fieldState.invalid} onChange={(files) => {
+                        console.log("files", files);
+                        form.setValue("cover_image_url", files[0]);
+                    }} />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </Field>
             )}

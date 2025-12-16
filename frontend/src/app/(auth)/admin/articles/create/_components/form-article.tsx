@@ -18,6 +18,10 @@ import FormSEO from "./form-seo";
 import { GlobeIcon, NewspaperIcon, SquarePenIcon } from "lucide-react";
 import SlotHeaderItem from "@/components/slot-header-item";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner"
+import { useCreateArticle } from "@/hooks/use-create-article";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/lib/axios/api";
 
 const articleFormSchema = z.object({
     title: z.string().min(1, "Title is required"),
@@ -25,7 +29,7 @@ const articleFormSchema = z.object({
     excerpt: z.string().min(1, "Excerpt is required"),
     category_id: z.string().min(1, "Category is required"),
     tags: z.array(z.string()).min(1, "Tags are required"),
-    cover_image_url: z.any().optional().refine((file) => file ? file instanceof File : false, {
+    cover_image_url: z.instanceof(File).refine((file) => file ? file instanceof File : false, {
         message: "Cover image is required",
     }),
     meta_title: z.string().min(1, "Meta title is required"),
@@ -34,6 +38,10 @@ const articleFormSchema = z.object({
 });
 export type ArticleFormValues = z.infer<typeof articleFormSchema>;
 export default function FormArticle() {
+
+    const { mutate: mutateCreateArticle, isPending } = useMutation({
+        mutationFn: (data: ArticleApi.PayloadCreateArticle) => api.post<ArticleApi.PayloadArticle>("/article", data),
+    });
     const form = useForm<ArticleFormValues>({
         resolver: zodResolver(articleFormSchema),
         defaultValues: {
@@ -50,10 +58,29 @@ export default function FormArticle() {
     });
 
     const onSubmit = (values: ArticleFormValues) => {
-        console.log(values);
+        console.log("values", values);
+        const payload: ArticleApi.PayloadCreateArticle = {
+            title: values.title,
+            slug: values.slug,
+            excerpt: values.excerpt,
+            category_id: values.category_id,
+            tags: JSON.stringify(values.tags),
+            cover_image_url: values.cover_image_url,
+            contents: values.contents,
+            meta_title: values.meta_title,
+            meta_description: values.meta_description,
+        };
+        mutateCreateArticle(payload, {
+            onSuccess: () => {
+                toast.success("Article created successfully");
+            },
+            onError: () => {
+                toast.error("Error creating article");
+            },
+        })
     };
 
-    console.log(form.formState.errors);
+    console.log("sad", form.formState.errors);
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-x-4">
@@ -129,7 +156,7 @@ export default function FormArticle() {
                 </div>
 
                 <SlotHeaderItem className="right-30">
-                    <Button className="rounded-sm px-4" size="sm" type="submit">
+                    <Button className="rounded-sm px-4" size="sm" type="submit" isLoading={isPending} disabled={isPending} >
                         Save
                     </Button>
                 </SlotHeaderItem>

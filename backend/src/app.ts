@@ -2,6 +2,7 @@ import cors from "cors";
 import express, { Express } from "express";
 import articleRoutes from "./routes/article-routes.js";
 import logRoutes from "./routes/log-routes.js";
+import uploadRoutes from "./routes/upload-routes.js";
 
 const app: Express = express();
 
@@ -21,6 +22,7 @@ app.get("/health", (req, res) => {
 // Routes
 app.use("/api/article", articleRoutes);
 app.use("/api/log", logRoutes);
+app.use("/api/upload", uploadRoutes);
 
 // 404 handler
 app.use((req, res) => {
