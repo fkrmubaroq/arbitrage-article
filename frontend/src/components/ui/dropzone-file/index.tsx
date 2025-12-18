@@ -34,7 +34,7 @@ export default function DropzoneFile({ type = "image", multiple = false, invalid
     }
     return <div
         aria-invalid={invalid}
-        className={cn("border-dashed border-2 border-gray-200 bg-gray-100 rounded-md p-4 hover:bg-gray-100/75 cursor-pointer",
+        className={cn("border-dashed border-2 dark:border-border border-gray-200 dark:bg-input/30 dark:hover:bg-input/50 bg-gray-100 rounded-md p-4 hover:bg-gray-100/75 cursor-pointer",
             "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
         )}
         onClick={() => inputRef.current?.click()}>
